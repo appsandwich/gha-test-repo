@@ -2,6 +2,11 @@ name: Sample Workflow
 
 on:
   workflow_dispatch:
+    inputs:
+      skipSubmission:
+        description: 'Skip App Store Submission'     
+        required: true
+        default: "true"
 
 jobs:
 
