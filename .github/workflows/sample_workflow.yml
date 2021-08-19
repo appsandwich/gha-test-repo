@@ -22,4 +22,4 @@ jobs:
 
     - name: Run script
       run: |
-        ./scripts/sample.sh '${{ steps.branch-name.outputs.current_branch }}'
+        ./scripts/sample.sh '${{ steps.branch-name.outputs.current_branch }}' '${{ github.event.inputs.skipSubmission }}'
