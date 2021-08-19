@@ -1,0 +1,24 @@
+name: Sample Workflow
+
+on:
+  workflow_dispatch:
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Get branch names
+      id: branch-name
+      uses: tj-actions/branch-names@v4.8
+
+    - name: Current branch name
+      run: |
+        export CURRENT_BRANCH='${{ steps.branch-name.outputs.current_branch }}'
+
+    - name: Run script
+      run: |
+        ./scripts/sample.sh $CURRENT_BRANCH
