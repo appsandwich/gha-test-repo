@@ -15,10 +15,6 @@ jobs:
       id: branch-name
       uses: tj-actions/branch-names@v4.8
 
-    - name: Current branch name
-      run: |
-        export CURRENT_BRANCH='${{ steps.branch-name.outputs.current_branch }}'
-
     - name: Run script
       run: |
-        ./scripts/sample.sh $CURRENT_BRANCH
+        ./scripts/sample.sh '${{ steps.branch-name.outputs.current_branch }}'
