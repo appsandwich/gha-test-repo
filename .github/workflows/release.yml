@@ -20,10 +20,9 @@ jobs:
       - uses: actions/checkout@v2
         with:
           ref: main
-#      - name: Create release branch from development
-#        run: |
-#          git checkout -b Releases/${{ github.event.inputs.version }}
-#          git push origin Releases/${{ github.event.inputs.version }}
+     - name: Create release branch from development
+       run: |
+         
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v3
         with:
