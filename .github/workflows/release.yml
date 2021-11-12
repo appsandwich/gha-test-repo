@@ -15,7 +15,7 @@ on:
 jobs:
   create_release_branch_pr:
     name: Create new release branch and PR.
-    runs-on: [self-hosted, default]
+    runs-on: [default]
     steps:
       - uses: actions/checkout@v2
       - name: Create release branch from development
