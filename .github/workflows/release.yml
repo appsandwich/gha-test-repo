@@ -13,20 +13,23 @@ jobs:
     name: Create new release branch and PR.
     runs-on: ubuntu-latest
     steps:
+      - name: Strip version number
+        run: echo "RELEASE_BRANCH=$(echo Releases/${{ github.event.inputs.version }} | sed -e 's:\.:_:g')" >> $GITHUB_ENV
+
       - name: Checkout development branch
         uses: actions/checkout@v2
         with:
           ref: development
       - name: Create release branch from development
         run: |
-          git checkout -b Releases/${{ github.event.inputs.version }}
-          git push origin Releases/${{ github.event.inputs.version }}
+          git checkout -b ${RELEASE_BRANCH}
+          git push origin ${RELEASE_BRANCH}
          
       - name: Create Pull Request
         uses: thomaseizinger/create-pull-request@master
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           base: main
-          head: Releases/${{ github.event.inputs.version }}
+          head: ${RELEASE_BRANCH}
           title: "Merge release branch ${{ github.event.inputs.version }} into master."
 
