@@ -3,6 +3,7 @@ name: Generate Release
 env:
   # Used to access private repos
   GITHUB_ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN_GITHUB }}
+  GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN_GITHUB }}
 
 on:
   workflow_dispatch:
@@ -29,7 +30,6 @@ jobs:
       - name: Create Pull Request
         uses: thomaseizinger/create-pull-request@master
         with:
-          GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN_GITHUB }}
           base: main
           head: Releases/${{ github.event.inputs.version }}
           title: "Merge release branch ${{ github.event.inputs.version }} into master."
