@@ -18,9 +18,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+        with:
+          ref: development
       - name: Create release branch from development
         run: |
-          git checkout development
           git checkout -b Releases/${{ inputs.version }}
           git push origin Releases/${{ inputs.version }}
       - name: Create Pull Request
