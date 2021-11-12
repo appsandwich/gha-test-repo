@@ -21,7 +21,6 @@ jobs:
         with:
           ref: main
      - name: Create release branch from development
-       run: |
          
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v3
