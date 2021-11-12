@@ -28,7 +28,7 @@ jobs:
           git push origin ${RELEASE_BRANCH}
          
       - name: Create Pull Request
-        uses: thomaseizinger/create-pull-request@master
+        uses: thomaseizinger/create-pull-request@1.2.1
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           base: main
