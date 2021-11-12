@@ -22,11 +22,11 @@ jobs:
           ref: development
       - name: Create release branch from development
         run: |
-          git checkout -b Releases/${{ inputs.version }}
-          git push origin Releases/${{ inputs.version }}
+          git checkout -b Releases/${{ github.event.inputs.version }}
+          git push origin Releases/${{ github.event.inputs.version }}
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v3
         with:
-          branch: Releases/${{ inputs.version }}
-          title: "Merge release branch ${{ inputs.version }} into master."
+          branch: Releases/${{ github.event.inputs.version }}
+          title: "Merge release branch ${{ github.event.inputs.version }} into master."
 
