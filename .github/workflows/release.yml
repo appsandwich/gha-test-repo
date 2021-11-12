@@ -19,7 +19,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          ref: development
+          ref: main
 #      - name: Create release branch from development
 #        run: |
 #          git checkout -b Releases/${{ github.event.inputs.version }}
@@ -27,7 +27,6 @@ jobs:
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v3
         with:
-          base: main
           branch: Releases/${{ github.event.inputs.version }}
           title: "Merge release branch ${{ github.event.inputs.version }} into master."
 
