@@ -32,6 +32,6 @@ jobs:
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           base: main
-          head: ${{ steps.version.outputs.RELEASE_BRANCH }}
+          head: ${{ env.RELEASE_BRANCH }}
           title: "Merge release branch ${{ github.event.inputs.version }} into master."
 
