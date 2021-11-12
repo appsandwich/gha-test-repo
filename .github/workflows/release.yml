@@ -14,6 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Strip version number
+        id: version
         run: echo "RELEASE_BRANCH=$(echo Releases/${{ github.event.inputs.version }} | sed -e 's:\.:_:g')" >> $GITHUB_ENV
 
       - name: Checkout development branch
@@ -31,6 +32,6 @@ jobs:
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           base: main
-          head: ${{ RELEASE_BRANCH }}
+          head: ${{ steps.version.outputs.RELEASE_BRANCH }}
           title: "Merge release branch ${{ github.event.inputs.version }} into master."
 
