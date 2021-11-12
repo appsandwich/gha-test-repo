@@ -20,6 +20,7 @@ jobs:
         uses: actions/checkout@v2
         with:
           ref: development
+
       - name: Create release branch from development
         run: |
           git checkout -b ${RELEASE_BRANCH}
@@ -30,6 +31,6 @@ jobs:
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           base: main
-          head: ${RELEASE_BRANCH}
+          head: ${{ RELEASE_BRANCH }}
           title: "Merge release branch ${{ github.event.inputs.version }} into master."
 
