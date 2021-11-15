@@ -12,31 +12,31 @@ env:
   XCODE_PROJECT: TestApp/TestApp.xcodeproj/project.pbxproj
 
 jobs:
-  create_release_branch_pr:
-    name: Create new release branch and PR.
-    runs-on: ubuntu-latest
-    steps:
-      - name: Strip version number
-        id: version
-        run: echo "RELEASE_BRANCH=$(echo Releases/${{ github.event.inputs.version }} | sed -e 's:\.:_:g')" >> $GITHUB_ENV
+  # create_release_branch_pr:
+  #   name: Create new release branch and PR.
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Strip version number
+  #       id: version
+  #       run: echo "RELEASE_BRANCH=$(echo Releases/${{ github.event.inputs.version }} | sed -e 's:\.:_:g')" >> $GITHUB_ENV
 
-      - name: Checkout development branch
-        uses: actions/checkout@v2
-        with:
-          ref: development
+  #     - name: Checkout development branch
+  #       uses: actions/checkout@v2
+  #       with:
+  #         ref: development
 
-      - name: Create release branch from development
-        run: |
-          git checkout -b ${RELEASE_BRANCH}
-          git push origin ${RELEASE_BRANCH}
+  #     - name: Create release branch from development
+  #       run: |
+  #         git checkout -b ${RELEASE_BRANCH}
+  #         git push origin ${RELEASE_BRANCH}
          
-      - name: Create Pull Request
-        uses: thomaseizinger/create-pull-request@1.2.1
-        with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          base: main
-          head: ${{ env.RELEASE_BRANCH }}
-          title: "Merge release branch ${{ github.event.inputs.version }} into master."
+  #     - name: Create Pull Request
+  #       uses: thomaseizinger/create-pull-request@1.2.1
+  #       with:
+  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #         base: main
+  #         head: ${{ env.RELEASE_BRANCH }}
+  #         title: "Merge release branch ${{ github.event.inputs.version }} into master."
 
 
   bump_version_pr:
