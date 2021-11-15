@@ -50,9 +50,8 @@ jobs:
 
       - name: Create version bump branch from development
         run: |
-          echo "VERSION_BUMP_BRANCH=$(echo version_bump/${{ github.event.inputs.version }} | sed -e 's:\.:_:g')" >> $GITHUB_ENV
+          echo "VERSION_BUMP_BRANCH=$(echo VersionBumps/${{ github.event.inputs.version }} | sed -e 's:\.:_:g')" >> $GITHUB_ENV
           git checkout -b ${{ env.VERSION_BUMP_BRANCH }}
-          git push origin ${{ env.VERSION_BUMP_BRANCH }}
 
       - name: Update version number
         run: |
