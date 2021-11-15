@@ -48,6 +48,11 @@ jobs:
         with:
           ref: development
 
+      - name: Configure git
+        run: |
+          git config --global user.email "github@vinnycoyne.com"
+          git config --global user.name "Deploy Bot"
+
       - name: Generate branch name and store in GITHUB_ENV
         run: echo "VERSION_BUMP_BRANCH=$(echo version_bump/${{ github.event.inputs.version }} | sed -e 's:\.:_:g')" >> $GITHUB_ENV
 
