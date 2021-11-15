@@ -9,7 +9,7 @@ on:
         required: true
 
 env:
-  XCODE_PROJECT: TestApp/TestApp.xcodeproj/project.pbxproj
+  XCODE_PROJECT: 'TestApp/TestApp.xcodeproj/project.pbxproj'
 
 jobs:
   # create_release_branch_pr:
