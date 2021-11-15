@@ -48,10 +48,11 @@ jobs:
         with:
           ref: development
 
+      - name: Generate branch name and store in GITHUB_ENV
+        run: echo "VERSION_BUMP_BRANCH=$(echo version_bump/${{ github.event.inputs.version }} | sed -e 's:\.:_:g')" >> $GITHUB_ENV
+
       - name: Create version bump branch from development
-        run: |
-          echo "VERSION_BUMP_BRANCH=$(echo VersionBumps/${{ github.event.inputs.version }} | sed -e 's:\.:_:g')" >> $GITHUB_ENV
-          git checkout -b ${{ env.VERSION_BUMP_BRANCH }}
+        run: git checkout -b ${{ env.VERSION_BUMP_BRANCH }}
 
       - name: Update version number
         run: |
