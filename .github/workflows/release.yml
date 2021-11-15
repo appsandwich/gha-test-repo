@@ -41,7 +41,7 @@ jobs:
 
   bump_version_pr:
     name: Bump app version and create PR.
-    runs-on: macos-11
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout development branch
         uses: actions/checkout@v2
@@ -51,8 +51,8 @@ jobs:
       - name: Create version bump branch from development
         run: |
           echo "VERSION_BUMP_BRANCH=$(echo version_bump/${{ github.event.inputs.version }} | sed -e 's:\.:_:g')" >> $GITHUB_ENV
-          git checkout -b ${VERSION_BUMP_BRANCH}
-          git push origin ${VERSION_BUMP_BRANCH}
+          git checkout -b ${{ env.VERSION_BUMP_BRANCH }}
+          git push origin ${{ env.VERSION_BUMP_BRANCH }}
 
       - name: Update version number
         run: |
