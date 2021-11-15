@@ -9,7 +9,7 @@ on:
         required: true
 
 env:
-  XCODE_PROJECT: BlueSteel.xcodeproj/project.pbxproj
+  XCODE_PROJECT: TestApp/TestApp.xcodeproj/project.pbxproj
 
 jobs:
   create_release_branch_pr:
@@ -17,6 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Strip version number
+        id: version
         run: echo "RELEASE_BRANCH=$(echo Releases/${{ github.event.inputs.version }} | sed -e 's:\.:_:g')" >> $GITHUB_ENV
 
       - name: Checkout development branch
