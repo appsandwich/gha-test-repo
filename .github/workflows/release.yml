@@ -1,9 +1,5 @@
 name: Generate Release
 
-env:
-  # Used to access private repos
-  GITHUB_ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN_GITHUB }}
-
 on:
   workflow_dispatch:
     inputs:
@@ -12,21 +8,69 @@ on:
         description: "Version number in the following format: major.minor.patch"
         required: true
 
+env:
+  XCODE_PROJECT: 'TestApp/TestApp.xcodeproj/project.pbxproj'
+
 jobs:
   create_release_branch_pr:
     name: Create new release branch and PR.
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - name: Strip version number
+        id: version
+        run: echo "RELEASE_BRANCH=$(echo Releases/${{ github.event.inputs.version }} | sed -e 's:\.:_:g')" >> $GITHUB_ENV
+
+      - name: Checkout development branch
+        uses: actions/checkout@v2
         with:
           ref: development
+
       - name: Create release branch from development
         run: |
-          git checkout -b Releases/${{ github.event.inputs.version }}
-          git push origin Releases/${{ github.event.inputs.version }}
+          git checkout -b ${RELEASE_BRANCH}
+          git push origin ${RELEASE_BRANCH}
+         
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v3
+        uses: thomaseizinger/create-pull-request@1.2.1
         with:
-          branch: main
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          base: main
+          head: ${{ env.RELEASE_BRANCH }}
           title: "Merge release branch ${{ github.event.inputs.version }} into master."
+
+
+  bump_version_pr:
+    name: Bump app version and create PR.
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout development branch
+        uses: actions/checkout@v2
+        with:
+          ref: development
+
+      - name: Configure git
+        run: |
+          git config --global user.email "github@vinnycoyne.com"
+          git config --global user.name "Deploy Bot"
+
+      - name: Generate branch name and store in GITHUB_ENV
+        run: echo "VERSION_BUMP_BRANCH=$(echo version_bump/${{ github.event.inputs.version }} | sed -e 's:\.:_:g')" >> $GITHUB_ENV
+
+      - name: Create version bump branch from development
+        run: git checkout -b ${{ env.VERSION_BUMP_BRANCH }}
+
+      - name: Update version number
+        run: |
+          sed -i "s/MARKETING_VERSION = [^;]*/MARKETING_VERSION = ${{ github.event.inputs.version }}/g" ${{ env.XCODE_PROJECT }}
+          git add ${{ env.XCODE_PROJECT }}
+          git commit -m "Bumped project version to ${{ github.event.inputs.version }}."
+          git push origin ${{ env.VERSION_BUMP_BRANCH }}
+         
+      - name: Create Pull Request
+        uses: thomaseizinger/create-pull-request@1.2.1
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          base: development
+          head: ${{ env.VERSION_BUMP_BRANCH }}
+          title: "Bump version to ${{ github.event.inputs.version }}."
 
